@@ -17,10 +17,8 @@
 
 - (void)viewDidLoad {
     self.cells = [[NSMutableArray alloc] init];
-    [super viewDidLoad];
     [StreamHandlerSingleton sharedSingleton].viewController = self;
-    self.commandTableView.delegate = self;
-    self.commandTableView.dataSource = self;
+    [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -31,11 +29,13 @@
 
 -(void)receivedCommand
 {
+    [self.commandTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.commandTableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 -(void)receivedAbsoluteCommand
 {
+    [self.commandTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     NSArray* selectedRows = [self.commandTableView indexPathsForSelectedRows];
     for (NSIndexPath* path in selectedRows)
     {

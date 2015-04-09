@@ -60,7 +60,7 @@ static StreamHandlerSingleton *_sharedSingleton = nil;
             
             if (theStream == inputStream) {
                 
-                uint8_t buffer[1024];
+                uint8_t buffer[10];
                 long len;
                 
                 while ([inputStream hasBytesAvailable]) {
@@ -113,12 +113,10 @@ static StreamHandlerSingleton *_sharedSingleton = nil;
         text = [NSString stringWithFormat:@"2, red: %d; blue: %d; green %d",message[1],message[2],message[3]];
     }
     [self.viewController.cells insertObject:text atIndex:0];
-    
-    [self.viewController.commandTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     if (message[0] == 0x01)
         [self.viewController receivedCommand];
     else
         [self.viewController receivedAbsoluteCommand];
-    [self.secondViewController.colorLabel setBackgroundColor:[UIColor colorWithRed:[self.colors[0] intValue]/255.0 green:[self.colors[1] intValue]/255.0 blue:[self.colors[2] intValue]/255.0 alpha:1.0]];
+    [self.secondViewController updateColor];
 }
 @end
