@@ -94,7 +94,7 @@ static StreamHandlerSingleton *_sharedSingleton = nil;
 }
 
 - (void) messageReceived:(uint8_t *)message {
-    
+    NSString* text;
     if (message[0] == 0x01) {
         int16_t red = message[1] << 8;
         red |= message[2];
@@ -104,12 +104,21 @@ static StreamHandlerSingleton *_sharedSingleton = nil;
         green |= message[6];
         self.colors = @[@([self.colors[0] intValue] + red), @([self.colors[1] intValue] + blue),@([self.colors[2] intValue] + green)];
         NSLog(@"1, red:%d; blue: %d; green %d",red, blue, green);
+        text = [NSString stringWithFormat:@"1, red:%d; blue: %d; green %d",red, blue, green];
     }
     else
     {
         self.colors = @[@(message[1]),@(message[2]),@(message[3])];
         NSLog(@"2, red: %d; blue: %d; green %d",message[1],message[2],message[3]);
+        text = [NSString stringWithFormat:@"2, red: %d; blue: %d; green %d",message[1],message[2],message[3]];
     }
+    [self.viewController.cells insertObject:text atIndex:0];
+    
+    [self.viewController.commandTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if (message[0] == 0x01)
+        [self.viewController receivedCommand];
+    else
+        [self.viewController receivedAbsoluteCommand];
     [self.secondViewController.colorLabel setBackgroundColor:[UIColor colorWithRed:[self.colors[0] intValue]/255.0 green:[self.colors[1] intValue]/255.0 blue:[self.colors[2] intValue]/255.0 alpha:1.0]];
 }
 @end

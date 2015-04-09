@@ -11,6 +11,10 @@
 @interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *commandTableView;
+@property (strong, nonatomic) NSMutableArray* cells;
+
+- (void)receivedCommand;
+- (void)receivedAbsoluteCommand;
 
 @end
 
